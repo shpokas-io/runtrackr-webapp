@@ -5,9 +5,9 @@ import runImage from "../assets/images/rundummy.jpg";
 export default function HomePage() {
   //Sample data
   const shoeStats = {
-    pairs: 2,
-    totalMileage: 300,
-    averageMileage: 150,
+    name: "Vaporfly",
+    totalMileage: 373,
+    maxMileage: 500,
   };
 
   const lastRun = {
@@ -43,8 +43,11 @@ export default function HomePage() {
               alt="Running Shoes"
               style={{ width: "200px", borderRadius: "10px", margin: "10px 0" }}
             />
-            <Typography>Pairs of shoes: {shoeStats.pairs}</Typography>
-            <Typography>Total mileage: {shoeStats.totalMileage} km</Typography>
+            <Typography>{shoeStats.name} shoes</Typography>
+            <Typography>
+              Total mileage: {shoeStats.totalMileage} km out of{" "}
+              {shoeStats.maxMileage} km
+            </Typography>
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
