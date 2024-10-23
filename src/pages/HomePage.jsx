@@ -1,4 +1,4 @@
-import { Typography, Box, Grid } from "@mui/material";
+import { Typography, Box, Grid, Avatar } from "@mui/material";
 import shoeImage from "../assets/images/shoedummy.webp";
 import runImage from "../assets/images/rundummy.jpg";
 
@@ -17,15 +17,24 @@ export default function HomePage() {
   };
 
   return (
-    <Box
-      sx={{
-        p: 3,
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <Box sx={{ p: 3 }}>
+      {/* User info for mobile */}
+
+      <Box
+        sx={{
+          display: { xs: "flex", md: "none" }, //Show only on mobile
+          flexDirection: "column",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <Avatar sx={{ bgcolor: "primary.main", mb: 1 }}>
+          {/* Placeholder user icon*/}U
+        </Avatar>
+        <Typography variant="h4">Hello, UserName</Typography>
+        <Typography variant="h6">Here are your latest statistics:</Typography>
+      </Box>
+
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Box
