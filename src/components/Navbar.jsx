@@ -1,30 +1,51 @@
-import React, { useState } from "react";
-import Appbar from "@mui/material/AppBar";
-import AppBar from "@mui/material/AppBar";
+import { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  //State
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key++ + "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-    setDrawerOpen(open);
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const links = [
-    { text: "Home", path: "/" },
-    { text: "Shoe statistics", path: "/shoe-stats" },
-    { text: "Run history", path: "/run-history" },
-  ];
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <>
-      <AppBar position="static" />
-    </>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleMenuOpen}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" style={{ flexGrow: 1 }}>
+          Runtrackr
+        </Typography>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem component={Link} to="/" onClick={handleMenuClose}>
+            Home
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>Other Page</MenuItem>
+        </Menu>
+      </Toolbar>
+    </AppBar>
   );
 }
