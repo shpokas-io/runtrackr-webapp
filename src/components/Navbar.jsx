@@ -9,8 +9,10 @@ import {
   Menu,
   MenuItem,
   useMediaQuery,
+  Avatar,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
@@ -71,6 +73,15 @@ export default function Navbar() {
               </MenuItem>
             </Menu>
           </>
+        )}
+
+        {/* User bubble for Desktop */}
+        {isDesktop && (
+          <IconButton edge="end" color="inherit">
+            <Avatar sx={{ bgcolor: "primary.main" }}>
+              <AccountCircle />
+            </Avatar>
+          </IconButton>
         )}
       </Toolbar>
     </AppBar>
