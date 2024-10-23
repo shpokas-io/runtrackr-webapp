@@ -22,19 +22,22 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{ borderRadius: "0 0 20px 20px", padding: "0 10px" }}
+    >
       <Toolbar>
+        <Typography variant="h6" style={{ flexGrow: 1 }}>
+          Runtrackr
+        </Typography>
         <IconButton
-          edge="start"
+          edge="end"
           color="inherit"
           aria-label="menu"
           onClick={handleMenuOpen}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
-          Runtrackr
-        </Typography>
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
@@ -43,7 +46,6 @@ export default function Navbar() {
           <MenuItem component={Link} to="/" onClick={handleMenuClose}>
             Home
           </MenuItem>
-          <MenuItem onClick={handleMenuClose}>Other Page</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>
