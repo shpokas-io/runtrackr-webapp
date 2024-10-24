@@ -48,8 +48,11 @@ export default function Navbar() {
             <Button component={Link} to="/" color="inherit">
               Home
             </Button>
-            <Button component={Link} to="/" color="inherit">
-              Other Page
+            <Button component={Link} to="/shoes" color="inherit">
+              Shoe library
+            </Button>
+            <Button component={Link} to="/runs" color="inherit">
+              All runs
             </Button>
           </Box>
         ) : (
@@ -70,6 +73,12 @@ export default function Navbar() {
             >
               <MenuItem component={Link} to="/" onClick={handleMenuClose}>
                 Home
+              </MenuItem>
+              <MenuItem component={Link} to="/runs" onClick={handleMenuClose}>
+                All runs
+              </MenuItem>
+              <MenuItem component={Link} to="/shoes" onClick={handleMenuClose}>
+                Shoe library
               </MenuItem>
             </Menu>
           </>
