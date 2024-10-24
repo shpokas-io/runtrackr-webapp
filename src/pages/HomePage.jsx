@@ -2,8 +2,9 @@
 import { Typography, Box, Grid, Avatar } from "@mui/material";
 import axios from "axios";
 import shoeImage from "../assets/images/shoedummy.webp";
-import runImage from "../assets/images/rundummy.jpg";
 import { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Polyline } from "react-leaflet";
+import polyline from "@mapbox/polyline";
 
 export default function HomePage() {
   const [shoeStats, setShoeStats] = useState(null);
@@ -34,6 +35,10 @@ export default function HomePage() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
+  //Decode the polyline
+  const coordinates = polyline.decode(lastRun?.summary_polyline);
+
+  const mapCenter = [coordinates[0][0], coordinates[0][1]];
 
   return (
     <Box sx={{ p: 3 }}>
@@ -89,18 +94,28 @@ export default function HomePage() {
             alignItems="center"
           >
             <Typography variant="h5">Last Run Data</Typography>
-            <img
-              src={runImage}
-              alt="Last Run"
-              style={{ width: "200px", borderRadius: "10px", margin: "10px 0" }}
-            />
+            <MapContainer
+              center={mapCenter}
+              zoom={13}
+              style={{ height: "400px", width: "100%" }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <Polyline
+                positions={coordinates.map((coord) => [coord[0], coord[1]])}
+                color="blue"
+              />
+            </MapContainer>
+            <Typography>Name: {lastRun?.name || "Loading..."}</Typography>
             <Typography>
               Date:{lastRun ? lastRun.date : "Loading..."}
             </Typography>
             <Typography>
               Distance: {lastRun ? lastRun.distance : "Loading..."} km
             </Typography>
-            {/* <Typography>Duration: {lastRun ? lastRun.duration}</Typography> */}
+            <Typography>Duration:{lastRun?.moving_time}</Typography>
           </Box>
         </Grid>
       </Grid>
