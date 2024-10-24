@@ -5,6 +5,7 @@ import shoeImage from "../assets/images/shoedummy.webp";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Polyline } from "react-leaflet";
 import polyline from "@mapbox/polyline";
+import { Button } from "@mui/material";
 
 export default function HomePage() {
   const [shoeStats, setShoeStats] = useState(null);
@@ -103,6 +104,16 @@ export default function HomePage() {
                 {shoeStats ? shoeStats.totalMileage : "Loading..."} km out of
                 {shoeStats ? shoeStats.maxMileage : "Loading..."} km
               </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+                onClick={() => {
+                  window.location.href = "/shoes";
+                }}
+              >
+                See All Shoes
+              </Button>
             </Box>
 
             {/* //Last run data box */}
@@ -141,6 +152,16 @@ export default function HomePage() {
                 Distance: {lastRun ? lastRun.distance : "Loading..."} km
               </Typography>
               <Typography>Duration: {lastRun?.moving_time}</Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }} //Margin top for spacing
+                onClick={() => {
+                  window.location.href = "/runs";
+                }}
+              >
+                See All Runs
+              </Button>
             </Box>
           </Box>
         </Grid>
