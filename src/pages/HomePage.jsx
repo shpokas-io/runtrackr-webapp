@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Typography, Box, Grid, Avatar } from "@mui/material";
 import axios from "axios";
 import shoeImage from "../assets/images/shoedummy.webp";
@@ -13,25 +14,18 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       //Checking if there`s an auth code in the URL
-      const urlParams = new URLsearchParams(window.location.search);
-      const authorizationCode = urlParams.get("code");
+      const urlParams = new URLSearchParams(window.location.search);
+      const data = urlParams.get("data");
 
-      if (authorizationCode) {
-        try {
-          //Make request to backend endpoint
-          const response = await axios.get(
-            "http://localhost:5000/auth/strava/callback"
-          );
-
-          //Set the fetched data to state
-          setLastRun(response.data.lastRun);
-          setShoeStats(response.data.gear);
-        } catch (err) {
-          setError("Failed to fetch data");
-          console.error(err);
-        } finally {
-          setLoading(false);
-        }
+      if (data) {
+        const parsedData = JSON.parse(decodeURIComponent(data));
+        setLastRun(parsedData.lastRun);
+        setShoeStats(parsedData.gear);
+        setLoading(false);
+      } else {
+        //No data, redirect to strava for auth
+        console.log("No authorization code, redirect to Strava..."); //debug line
+        window.location.href = `http://localhost:5000/auth/strava`;
       }
     };
 
