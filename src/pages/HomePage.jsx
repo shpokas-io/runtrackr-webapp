@@ -12,20 +12,26 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        //Make request to backend endpoint
-        const response = await axios.get(
-          "http://localhost:5000/auth/strava/callback"
-        );
+      //Checking if there`s an auth code in the URL
+      const urlParams = new URLsearchParams(window.location.search);
+      const authorizationCode = urlParams.get("code");
 
-        //Set the fetched data to state
-        setLastRun(response.data.lastRun);
-        setShoeStats(response.data.gear);
-      } catch (err) {
-        setError("Failed to fetch data");
-        console.error(err);
-      } finally {
-        setLoading(false);
+      if (authorizationCode) {
+        try {
+          //Make request to backend endpoint
+          const response = await axios.get(
+            "http://localhost:5000/auth/strava/callback"
+          );
+
+          //Set the fetched data to state
+          setLastRun(response.data.lastRun);
+          setShoeStats(response.data.gear);
+        } catch (err) {
+          setError("Failed to fetch data");
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
       }
     };
 
@@ -33,7 +39,7 @@ export default function HomePage() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>{eror}</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <Box sx={{ p: 3 }}>
@@ -71,10 +77,10 @@ export default function HomePage() {
               alt="Running Shoes"
               style={{ width: "200px", borderRadius: "10px", margin: "10px 0" }}
             />
-            <Typography>{shoeStats.name} shoes</Typography>
+            <Typography>{shoeStats?.name || `Loading...`}</Typography>
             <Typography>
-              Total mileage: {shoeStats.totalMileage} km out of{" "}
-              {shoeStats.maxMileage} km
+              Total mileage: {shoeStats ? shoeStats.totalMileage : "Loading..."}{" "}
+              km out of{shoeStats ? shoeStats.maxMileage : "Loading..."} km
             </Typography>
           </Box>
         </Grid>
@@ -94,9 +100,13 @@ export default function HomePage() {
               alt="Last Run"
               style={{ width: "200px", borderRadius: "10px", margin: "10px 0" }}
             />
-            <Typography>Date: {lastRun.date}</Typography>
-            <Typography>Distance: {lastRun.distance} km</Typography>
-            <Typography>Duration: {lastRun.duration}</Typography>
+            <Typography>
+              Date:{lastRun ? lastRun.date : "Loading..."}
+            </Typography>
+            <Typography>
+              Distance: {lastRun ? lastRun.distance : "Loading..."} km
+            </Typography>
+            {/* <Typography>Duration: {lastRun ? lastRun.duration}</Typography> */}
           </Box>
         </Grid>
       </Grid>
