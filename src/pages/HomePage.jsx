@@ -60,64 +60,88 @@ export default function HomePage() {
       </Box>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={12}>
           <Box
             p={2}
             border={1}
             borderColor="grey.400"
             borderRadius={2}
             display="flex"
-            flexDirection="column"
-            alignItems="center"
-            sx={{ height: "300px" }}
+            flexDirection={{ xs: "column", md: "row" }}
+            alignItems="stretch"
+            justifyContent="space-between"
+            sx={{ height: "auto" }}
           >
-            <Typography variant="h5">Shoe Statistics</Typography>
-            <img
-              src={shoeImage}
-              alt="Running Shoes"
-              style={{ width: "200px", borderRadius: "10px", margin: "10px 0" }}
-            />
-            <Typography>{shoeStats?.name || `Loading...`}</Typography>
-            <Typography>
-              Total mileage: {shoeStats ? shoeStats.totalMileage : "Loading..."}{" "}
-              km out of{shoeStats ? shoeStats.maxMileage : "Loading..."} km
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Box
-            p={2}
-            border={1}
-            borderColor="grey.400"
-            borderRadius={2}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            sx={{ height: "300px" }}
-          >
-            <Typography variant="h5">Last Run Data</Typography>
-            <MapContainer
-              center={mapCenter}
-              zoom={13}
-              style={{ height: "200px", width: "100%" }}
+            {/* //Shoe statistic box */}
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                mr: { xs: 0, md: 2 },
+                border: 1,
+                borderColor: "grey.400",
+                borderRadius: 1,
+                p: 2,
+                mb: { xs: 2, md: 0 },
+              }}
             >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              <Typography variant="h5">Shoe Statistics</Typography>
+              <img
+                src={shoeImage}
+                alt="Running Shoes"
+                style={{
+                  width: "200px",
+                  borderRadius: "10px",
+                  margin: "10px 0",
+                }}
               />
-              <Polyline
-                positions={coordinates.map((coord) => [coord[0], coord[1]])}
-                color="blue"
-              />
-            </MapContainer>
-            <Typography>Name: {lastRun?.name || "Loading..."}</Typography>
-            <Typography>
-              Date:{lastRun ? lastRun.date : "Loading..."}
-            </Typography>
-            <Typography>
-              Distance: {lastRun ? lastRun.distance : "Loading..."} km
-            </Typography>
-            <Typography>Duration:{lastRun?.moving_time}</Typography>
+              <Typography>{shoeStats?.name || `Loading...`}</Typography>
+              <Typography>
+                Total mileage:{" "}
+                {shoeStats ? shoeStats.totalMileage : "Loading..."} km out of
+                {shoeStats ? shoeStats.maxMileage : "Loading..."} km
+              </Typography>
+            </Box>
+
+            {/* //Last run data box */}
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                border: 1, // Border to create separation
+                borderColor: "grey.400",
+                borderRadius: 1,
+                p: 2,
+              }}
+            >
+              <Typography variant="h5">Last Run Data</Typography>
+              <MapContainer
+                center={mapCenter}
+                zoom={13}
+                style={{ height: "200px", width: "100%" }} // Adjusted map height
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <Polyline
+                  positions={coordinates.map((coord) => [coord[0], coord[1]])}
+                  color="blue"
+                />
+              </MapContainer>
+              <Typography>Name: {lastRun?.name || "Loading..."}</Typography>
+              <Typography>
+                Date: {lastRun ? lastRun.date : "Loading..."}
+              </Typography>
+              <Typography>
+                Distance: {lastRun ? lastRun.distance : "Loading..."} km
+              </Typography>
+              <Typography>Duration: {lastRun?.moving_time}</Typography>
+            </Box>
           </Box>
         </Grid>
       </Grid>
