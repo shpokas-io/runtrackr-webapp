@@ -69,6 +69,7 @@ export default function HomePage() {
             display="flex"
             flexDirection="column"
             alignItems="center"
+            sx={{ height: "300px" }}
           >
             <Typography variant="h5">Shoe Statistics</Typography>
             <img
@@ -92,12 +93,13 @@ export default function HomePage() {
             display="flex"
             flexDirection="column"
             alignItems="center"
+            sx={{ height: "300px" }}
           >
             <Typography variant="h5">Last Run Data</Typography>
             <MapContainer
               center={mapCenter}
               zoom={13}
-              style={{ height: "400px", width: "100%" }}
+              style={{ height: "200px", width: "100%" }}
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
