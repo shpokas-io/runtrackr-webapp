@@ -21,6 +21,12 @@ export default function HomePage() {
 
       if (data) {
         const parsedData = JSON.parse(decodeURIComponent(data));
+
+        //Store the access token in local storage
+        if (parsedData.accessToken) {
+          localStorage.setItem("accessToken", parsedData.accessToken);
+        }
+
         setLastRun(parsedData.lastRun);
         setShoeStats(parsedData.gear);
         setLoading(false);
