@@ -1,20 +1,39 @@
 import { Typography, Box, Grid, Avatar } from "@mui/material";
+import axios from "axios";
 import shoeImage from "../assets/images/shoedummy.webp";
 import runImage from "../assets/images/rundummy.jpg";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  //Sample data
-  const shoeStats = {
-    name: "Vaporfly",
-    totalMileage: 373,
-    maxMileage: 500,
-  };
+  const [shoeStats, setShoeStats] = useState(null);
+  const [lastRun, setLastRun] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const lastRun = {
-    date: "2024-10-20",
-    distance: 10, //Km
-    duration: "50 minutes",
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        //Make request to backend endpoint
+        const response = await axios.get(
+          "http://localhost:5000/auth/strava/callback"
+        );
+
+        //Set the fetched data to state
+        setLastRun(response.data.lastRun);
+        setShoeStats(response.data.gear);
+      } catch (err) {
+        setError("Failed to fetch data");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{eror}</div>;
 
   return (
     <Box sx={{ p: 3 }}>
