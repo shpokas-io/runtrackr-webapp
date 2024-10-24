@@ -74,10 +74,18 @@ export default function Navbar() {
               <MenuItem component={Link} to="/" onClick={handleMenuClose}>
                 Home
               </MenuItem>
-              <MenuItem component={Link} to="/runs" onClick={handleMenuClose}>
+              <MenuItem
+                component={Link}
+                to="/all-runs"
+                onClick={handleMenuClose}
+              >
                 All runs
               </MenuItem>
-              <MenuItem component={Link} to="/shoes" onClick={handleMenuClose}>
+              <MenuItem
+                component={Link}
+                to="/all-shoes"
+                onClick={handleMenuClose}
+              >
                 Shoe library
               </MenuItem>
             </Menu>

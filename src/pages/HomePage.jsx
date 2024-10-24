@@ -109,7 +109,7 @@ export default function HomePage() {
                 color="primary"
                 sx={{ mt: 2 }}
                 onClick={() => {
-                  window.location.href = "/shoes";
+                  window.location.href = "/all-shoes";
                 }}
               >
                 See All Shoes
@@ -157,7 +157,7 @@ export default function HomePage() {
                 color="primary"
                 sx={{ mt: 2 }} //Margin top for spacing
                 onClick={() => {
-                  window.location.href = "/runs";
+                  window.location.href = "/all-runs";
                 }}
               >
                 See All Runs
