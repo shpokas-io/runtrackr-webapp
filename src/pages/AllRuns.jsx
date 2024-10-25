@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Typography, Box, CardContent, Card, Grid } from "@mui/material";
+import {
+  Typography,
+  Box,
+  CardContent,
+  Button,
+  Card,
+  Grid,
+} from "@mui/material";
 
 export default function AllRuns() {
   const [runs, setRuns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalRuns, setTotalRuns] = useState(0);
+  const runsPerPage = 5; // Number of runs per page
 
   useEffect(() => {
     const fetchRuns = async () => {
@@ -19,10 +29,14 @@ export default function AllRuns() {
       }
 
       try {
-        const response = await axios.get("http://localhost:5000/api/runs", {
-          headers: { Authorization: accessToken },
-        });
-        setRuns(response.data);
+        const response = await axios.get(
+          `http://localhost:5000/api/runs?page=${currentPage}`,
+          {
+            headers: { Authorization: accessToken },
+          }
+        );
+        setRuns(response.data.runs);
+        setTotalRuns(response.data.total); // Get total runs for paginatiopn
       } catch (err) {
         console.error("Error fetching runs:", err);
         setError("Error fetching runs");
@@ -32,7 +46,17 @@ export default function AllRuns() {
     };
 
     fetchRuns();
-  }, []);
+  }, [currentPage]); //RE-fetch runs whenever currentPage changes
+
+  const totalPages = Math.ceil(totalRuns / runsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
@@ -59,7 +83,7 @@ export default function AllRuns() {
                     {run.name}
                   </Typography>
                   <Typography color="textSecondary">
-                    Date: {new Date(run.date).toLocaleDateString()}
+                    Date: {new Date(run.start_date).toLocaleDateString()}
                   </Typography>
                   <Typography>Distance: {run.distance} km</Typography>
                   <Typography>Duration: {run.moving_time} seconds</Typography>
@@ -71,6 +95,23 @@ export default function AllRuns() {
       ) : (
         <Typography>No runs available.</Typography>
       )}
+      <Box sx={{ mt: 3, display: "flex", justifyContent: "space-between" }}>
+        <Button
+          variant="contained"
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </Button>
+        <Typography>{`Page ${currentPage} of ${totalPages}`}</Typography>
+        <Button
+          variant="contained"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </Button>
+      </Box>
     </Box>
   );
 }
