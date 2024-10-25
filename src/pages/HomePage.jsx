@@ -11,6 +11,8 @@ export default function HomePage() {
   const [shoeStats, setShoeStats] = useState(null);
   const [lastRun, setLastRun] = useState(null);
   const [totalKilometersLastWeek, setTotalKilometersLastWeek] = useState(0);
+  const [totalKilometersCurrentWeek, setTotalKilometersCurrentWeek] =
+    useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -38,6 +40,7 @@ export default function HomePage() {
         });
 
         setTotalKilometersLastWeek(response.data.totalKilometersLastWeek);
+        setTotalKilometersCurrentWeek(response.data.totalKilometersCurrentWeek);
         setLoading(false);
       } else {
         //No data, redirect to strava for auth
@@ -196,6 +199,9 @@ export default function HomePage() {
             <Typography>
               Total kilometers run in the last week: {totalKilometersLastWeek}{" "}
               km
+            </Typography>
+            <Typography variant="h6">
+              Total kilometers this week: {totalKilometersCurrentWeek} km
             </Typography>
           </Box>
         </Grid>
