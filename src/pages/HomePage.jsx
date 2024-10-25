@@ -10,6 +10,7 @@ import { Button } from "@mui/material";
 export default function HomePage() {
   const [shoeStats, setShoeStats] = useState(null);
   const [lastRun, setLastRun] = useState(null);
+  const [totalKilometersLastWeek, setTotalKilometersLastWeek] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -26,9 +27,17 @@ export default function HomePage() {
         if (parsedData.accessToken) {
           localStorage.setItem("accessToken", parsedData.accessToken);
         }
-
+        //Fetch last run and shoe stats
         setLastRun(parsedData.lastRun);
         setShoeStats(parsedData.gear);
+
+        //Fetch runs data to get total kilometers for the last week
+        const accessToken = parsedData.accessToken;
+        const response = await axios.get("http://localhost:5000/api/runs", {
+          headers: { Authorization: accessToken },
+        });
+
+        setTotalKilometersLastWeek(response.data.totalKilometersLastWeek);
         setLoading(false);
       } else {
         //No data, redirect to strava for auth
@@ -42,9 +51,9 @@ export default function HomePage() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
+
   //Decode the polyline
   const coordinates = polyline.decode(lastRun?.summary_polyline);
-
   const mapCenter = [coordinates[0][0], coordinates[0][1]];
 
   return (
@@ -169,6 +178,25 @@ export default function HomePage() {
                 See All Runs
               </Button>
             </Box>
+          </Box>
+        </Grid>
+
+        {/* Weekly statistics */}
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              p: 2,
+              border: 1,
+              borderColor: "grey.400",
+              borderRadius: 1,
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h5">Weekly Statistics</Typography>
+            <Typography>
+              Total kilometers run in the last week: {totalKilometersLastWeek}{" "}
+              km
+            </Typography>
           </Box>
         </Grid>
       </Grid>
