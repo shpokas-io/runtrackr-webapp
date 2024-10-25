@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, CardContent, Card, Grid } from "@mui/material";
 
 export default function AllRuns() {
   const [runs, setRuns] = useState([]);
@@ -27,7 +27,7 @@ export default function AllRuns() {
         console.error("Error fetching runs:", err);
         setError("Error fetching runs");
       } finally {
-        setLoading(false); // Ensure loading state is updated regardless of success or error
+        setLoading(false); // Ensuring loading state is updated regardless of success or error
       }
     };
 
@@ -39,28 +39,35 @@ export default function AllRuns() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4">All Your Runs</Typography>
+      <Typography variant="h4" gutterBottom>
+        All Your Runs
+      </Typography>
       {runs.length > 0 ? (
-        runs.map((run) => (
-          <Box
-            key={run.id}
-            sx={{
-              mb: 2,
-              p: 2,
-              border: 1,
-              borderColor: "grey.400",
-              borderRadius: 1,
-            }}
-          >
-            <Typography variant="h6">{run.name}</Typography>
-            <Typography>Distance: {run.distance} km</Typography>
-            <Typography>
-              Date: {new Date(run.date).toLocaleDateString()}{" "}
-              {/* Format date */}
-            </Typography>
-            <Typography>Duration: {run.moving_time} seconds</Typography>
-          </Box>
-        ))
+        <Grid container spacing={2}>
+          {runs.map((run) => (
+            <Grid item xs={12} sm={6} md={4} key={run.id}>
+              <Card
+                sx={{
+                  borderRadius: 2,
+                  boxShadow: 3,
+                  transition: "transform 0.2s ease-in-out",
+                  "&:hover": { transform: "scale(1.02)" },
+                }}
+              >
+                <CardContent>
+                  <Typography variant="h6" color="primary" gutterBottom>
+                    {run.name}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    Date: {new Date(run.date).toLocaleDateString()}
+                  </Typography>
+                  <Typography>Distance: {run.distance} km</Typography>
+                  <Typography>Duration: {run.moving_time} seconds</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       ) : (
         <Typography>No runs available.</Typography>
       )}

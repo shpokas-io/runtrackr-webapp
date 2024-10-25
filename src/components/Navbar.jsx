@@ -51,7 +51,7 @@ export default function Navbar() {
             <Button component={Link} to="/shoes" color="inherit">
               Shoe library
             </Button>
-            <Button component={Link} to="/runs" color="inherit">
+            <Button component={Link} to="/all-runs" color="inherit">
               All runs
             </Button>
           </Box>
