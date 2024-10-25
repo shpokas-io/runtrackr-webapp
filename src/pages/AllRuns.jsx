@@ -58,6 +58,13 @@ export default function AllRuns() {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
 
+  // Function to format duration from seconds to hours and minutes
+  const formatDuration = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
@@ -85,8 +92,10 @@ export default function AllRuns() {
                   <Typography color="textSecondary">
                     Date: {new Date(run.start_date).toLocaleDateString()}
                   </Typography>
-                  <Typography>Distance: {run.distance} km</Typography>
-                  <Typography>Duration: {run.moving_time} seconds</Typography>
+                  <Typography>Distance: {run.distance / 1000} km</Typography>
+                  <Typography>
+                    Duration: {formatDuration(run.moving_time)}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
