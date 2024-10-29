@@ -41,6 +41,8 @@ export default function HomePage() {
         setLastRun(parsedData.lastRun);
         setShoeStats(parsedData.gear);
 
+        console.log("Parsed Data:", parsedData);
+
         //Fetch runs data to get total kilometers for the last week
         const accessToken = parsedData.accessToken;
         const response = await axios.get("http://localhost:5000/api/runs", {
@@ -74,6 +76,21 @@ export default function HomePage() {
   //Decode the polyline
   const coordinates = polyline.decode(lastRun?.summary_polyline);
   const mapCenter = [coordinates[0][0], coordinates[0][1]];
+
+  const formatDuration = (movingTimeString) => {
+    if (!movingTimeString) return "N/A"; // Handle undefined or null
+
+    const minutesMatch = movingTimeString.match(/(\d+)\s*minutes/);
+    if (minutesMatch) {
+      const minutes = parseInt(minutesMatch[1], 10);
+      const seconds = minutes * 60; // Convert minutes to seconds
+      const hours = Math.floor(seconds / 3600);
+      const minutesRemaining = Math.floor((seconds % 3600) / 60);
+      return `${hours}h ${minutesRemaining}m`;
+    }
+
+    return "N/A"; // In case the format is unexpected
+  };
 
   return (
     <Box sx={{ p: 3, backgroundColor: "background.default" }}>
@@ -212,7 +229,12 @@ export default function HomePage() {
                 <Typography>
                   Distance: {lastRun ? lastRun.distance : "Loading..."} km
                 </Typography>
-                <Typography>Duration: {lastRun?.moving_time}</Typography>
+                <Typography>
+                  Duration:{" "}
+                  {lastRun?.moving_time
+                    ? formatDuration(lastRun.moving_time)
+                    : "N/A"}
+                </Typography>
               </Box>
               <Button
                 fullWidth
