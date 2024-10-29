@@ -7,10 +7,13 @@ import {
   CardMedia,
   Typography,
   Box,
+  Pagination,
 } from "@mui/material";
 
 const AllShoes = () => {
   const [shoes, setShoes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     // Fetch the hardcoded shoe list from the backend
@@ -23,18 +26,28 @@ const AllShoes = () => {
       .catch((error) => console.error("Error fetching shoes:", error));
   }, []);
 
+  const indexOfLastShoe = currentPage * itemsPerPage;
+  const indexOfFirstShoe = indexOfLastShoe - itemsPerPage;
+  const currentShoes = shoes.slice(indexOfFirstShoe, indexOfLastShoe);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const totalPages = Math.ceil(shoes.length / itemsPerPage);
+
   return (
     <Box sx={{ padding: 3 }}>
       <Typography variant="h3" align="center" gutterBottom>
         Shoe List
       </Typography>
       <Grid container spacing={3} justifyContent="center">
-        {shoes.map((shoe) => (
+        {currentShoes.map((shoe) => (
           <Grid item key={shoe.id} xs={12} sm={6} md={4} lg={3}>
             <Card
               sx={{
-                width: 300, // Fixed width for all cards
-                height: 400, // Fixed height for all cards
+                width: 300,
+                height: 400,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -72,6 +85,12 @@ const AllShoes = () => {
           </Grid>
         ))}
       </Grid>
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        sx={{ marginTop: 3, display: "flex", justifyContent: "center" }}
+      />
     </Box>
   );
 };
