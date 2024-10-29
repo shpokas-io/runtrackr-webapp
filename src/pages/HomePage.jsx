@@ -1,5 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { Typography, Box, Grid, Avatar } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Grid,
+  Avatar,
+  Card,
+  CardContent,
+  CardMedia,
+} from "@mui/material";
 import axios from "axios";
 import shoeImage from "../assets/images/nike-structure.png";
 import { useEffect, useState } from "react";
@@ -41,6 +49,14 @@ export default function HomePage() {
 
         setTotalKilometersLastWeek(response.data.totalKilometersLastWeek);
         setTotalKilometersCurrentWeek(response.data.totalKilometersCurrentWeek);
+        console.log(
+          "Last Week Kilometers (Frontend):",
+          response.data.totalKilometersLastWeek
+        );
+        console.log(
+          "Current Week Kilometers (Frontend):",
+          response.data.totalKilometersCurrentWeek
+        );
         setLoading(false);
       } else {
         //No data, redirect to strava for auth
@@ -60,98 +76,124 @@ export default function HomePage() {
   const mapCenter = [coordinates[0][0], coordinates[0][1]];
 
   return (
-    <Box sx={{ p: 3 }}>
-      {/* User info for mobile */}
-
+    <Box sx={{ p: 3, backgroundColor: "background.default" }}>
       <Box
         sx={{
-          display: { xs: "flex", md: "none" }, //Show only on mobile
+          display: { xs: "flex", md: "none" },
           flexDirection: "column",
           alignItems: "center",
-          mb: 2,
+          mb: 3,
         }}
       >
-        <Avatar sx={{ bgcolor: "primary.main", mb: 1 }}>
-          {/* Placeholder user icon*/}U
-        </Avatar>
+        <Avatar sx={{ bgcolor: "primary.main", mb: 1 }}>U</Avatar>
         <Typography variant="h4">Hello, UserName</Typography>
-        <Typography variant="h6">Here are your latest statistics:</Typography>
+        <Typography variant="h6">Your latest statistics:</Typography>
       </Box>
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={12}>
-          <Box
-            p={2}
-            border={1}
-            borderColor="grey.400"
-            borderRadius={2}
-            display="flex"
-            flexDirection={{ xs: "column", md: "row" }}
-            alignItems="stretch"
-            justifyContent="space-between"
-            sx={{ height: "auto" }}
+        {/* Weekly Statistics */}
+        <Grid item xs={12}>
+          <Card variant="outlined" sx={{ borderRadius: 2, boxShadow: 3 }}>
+            <CardContent>
+              <Typography variant="h5" align="center" gutterBottom>
+                Weekly Statistics
+              </Typography>
+              <Typography align="center">
+                Total kilometers run last week: {totalKilometersLastWeek} km
+              </Typography>
+              <Typography variant="h6" align="center">
+                Total kilometers this week: {totalKilometersCurrentWeek} km
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Shoe Statistics */}
+        <Grid item xs={12} md={6} sx={{ display: "flex" }}>
+          <Card
+            variant="outlined"
+            sx={{
+              borderRadius: 2,
+              boxShadow: 3,
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
-            {/* //Shoe statistic box */}
-            <Box
+            <CardContent
               sx={{
                 flex: 1,
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
-                mr: { xs: 0, md: 2 },
-                border: 1,
-                borderColor: "grey.400",
-                borderRadius: 1,
-                p: 2,
-                mb: { xs: 2, md: 0 },
+                justifyContent: "space-between",
               }}
             >
-              <Typography variant="h5">Shoe Statistics</Typography>
-              <img
-                src={shoeImage}
-                alt="Running Shoes"
-                style={{
-                  width: "200px",
-                  borderRadius: "10px",
-                  margin: "10px 0",
-                }}
-              />
-              <Typography>{shoeStats?.name || `Loading...`}</Typography>
-              <Typography>
-                Total mileage:{" "}
-                {shoeStats ? shoeStats.totalMileage : "Loading..."} km out of
-                {shoeStats ? shoeStats.maxMileage : "Loading..."} km
+              <Typography variant="h5" align="center" gutterBottom>
+                Shoe Statistics
               </Typography>
+              <CardMedia
+                component="img"
+                height="140"
+                image={shoeImage}
+                alt="Running Shoes"
+                sx={{ objectFit: "contain", p: 1, alignSelf: "center" }}
+              />
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                <Typography>{shoeStats?.name || `Loading...`}</Typography>
+                <Typography>
+                  Total mileage:{" "}
+                  {shoeStats ? shoeStats.totalMileage : "Loading..."} km of{" "}
+                  {shoeStats ? shoeStats.maxMileage : "Loading..."} km
+                </Typography>
+              </Box>
               <Button
+                fullWidth
                 variant="contained"
                 color="primary"
                 sx={{ mt: 2 }}
-                onClick={() => {
-                  window.location.href = "/all-shoes";
-                }}
+                onClick={() => (window.location.href = "/all-shoes")}
               >
                 See All Shoes
               </Button>
-            </Box>
+            </CardContent>
+          </Card>
+        </Grid>
 
-            {/* //Last run data box */}
-            <Box
+        {/* Last Run Data */}
+        <Grid item xs={12} md={6} sx={{ display: "flex" }}>
+          <Card
+            variant="outlined"
+            sx={{
+              borderRadius: 2,
+              boxShadow: 3,
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <CardContent
               sx={{
                 flex: 1,
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
-                border: 1, // Border to create separation
-                borderColor: "grey.400",
-                borderRadius: 1,
-                p: 2,
+                justifyContent: "space-between",
               }}
             >
-              <Typography variant="h5">Last Run Data</Typography>
+              <Typography variant="h5" align="center" gutterBottom>
+                Last Run Data
+              </Typography>
               <MapContainer
                 center={mapCenter}
                 zoom={13}
-                style={{ height: "200px", width: "100%" }} // Adjusted map height
+                style={{ height: "200px", width: "100%", borderRadius: "8px" }}
               >
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -162,48 +204,27 @@ export default function HomePage() {
                   color="blue"
                 />
               </MapContainer>
-              <Typography>Name: {lastRun?.name || "Loading..."}</Typography>
-              <Typography>
-                Date: {lastRun ? lastRun.date : "Loading..."}
-              </Typography>
-              <Typography>
-                Distance: {lastRun ? lastRun.distance : "Loading..."} km
-              </Typography>
-              <Typography>Duration: {lastRun?.moving_time}</Typography>
+              <Box sx={{ textAlign: "center" }}>
+                <Typography>Name: {lastRun?.name || "Loading..."}</Typography>
+                <Typography>
+                  Date: {lastRun ? lastRun.date : "Loading..."}
+                </Typography>
+                <Typography>
+                  Distance: {lastRun ? lastRun.distance : "Loading..."} km
+                </Typography>
+                <Typography>Duration: {lastRun?.moving_time}</Typography>
+              </Box>
               <Button
+                fullWidth
                 variant="contained"
                 color="primary"
-                sx={{ mt: 2 }} //Margin top for spacing
-                onClick={() => {
-                  window.location.href = "/all-runs";
-                }}
+                sx={{ mt: 2 }}
+                onClick={() => (window.location.href = "/all-runs")}
               >
                 See All Runs
               </Button>
-            </Box>
-          </Box>
-        </Grid>
-
-        {/* Weekly statistics */}
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              p: 2,
-              border: 1,
-              borderColor: "grey.400",
-              borderRadius: 1,
-              textAlign: "center",
-            }}
-          >
-            <Typography variant="h5">Weekly Statistics</Typography>
-            <Typography>
-              Total kilometers run in the last week: {totalKilometersLastWeek}{" "}
-              km
-            </Typography>
-            <Typography variant="h6">
-              Total kilometers this week: {totalKilometersCurrentWeek} km
-            </Typography>
-          </Box>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </Box>
