@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Typography, Box, Grid, Avatar } from "@mui/material";
 import axios from "axios";
-import shoeImage from "../assets/images/shoedummy.webp";
+import shoeImage from "../assets/images/nike-structure.png";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Polyline } from "react-leaflet";
 import polyline from "@mapbox/polyline";
