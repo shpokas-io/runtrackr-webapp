@@ -1,31 +1,11 @@
-import { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Button,
-  Box,
-  Menu,
-  MenuItem,
-  useMediaQuery,
-  Avatar,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Link } from "react-router-dom";
+import { AppBar, Toolbar, Box, useMediaQuery } from "@mui/material";
+import NavTitle from "./NavTitle";
+import DesktopNav from "./DesktopNav";
+import MobileNav from "./MobileNav";
+import UserAvatar from "./UserAvatar";
 
 export default function Navbar() {
-  const [anchorEl, setAnchorEl] = useState(null);
   const isDesktop = useMediaQuery("(min-width:800px)");
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <AppBar
@@ -33,72 +13,17 @@ export default function Navbar() {
       sx={{ borderRadius: "0 0 20px 20px", padding: "0 10px" }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <Typography variant="h6">Runtrackr</Typography>
-
-        {/* NAV FOR DESKTIOP */}
+        <NavTitle />
         {isDesktop ? (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              flexGrow: 1,
-              mx: 2,
-            }}
-          >
-            <Button component={Link} to="/" color="inherit">
-              Home
-            </Button>
-            <Button component={Link} to="/all-shoes" color="inherit">
-              Shoe library
-            </Button>
-            <Button component={Link} to="/all-runs" color="inherit">
-              All runs
-            </Button>
-          </Box>
-        ) : (
-          //BURGER MENU FOR MOBILE
           <>
-            <IconButton
-              edge="end"
-              color="inherit"
-              aria-label="menu"
-              onClick={handleMenuOpen}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              <MenuItem component={Link} to="/" onClick={handleMenuClose}>
-                Home
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/all-runs"
-                onClick={handleMenuClose}
-              >
-                All runs
-              </MenuItem>
-              <MenuItem
-                component={Link}
-                to="/all-shoes"
-                onClick={handleMenuClose}
-              >
-                Shoe library
-              </MenuItem>
-            </Menu>
+            <DesktopNav />
+            <UserAvatar />
           </>
-        )}
-
-        {/* User bubble for Desktop */}
-        {isDesktop && (
-          <IconButton edge="end" color="inherit">
-            <Avatar sx={{ bgcolor: "primary.main" }}>
-              <AccountCircle />
-            </Avatar>
-          </IconButton>
+        ) : (
+          <Box sx={{ ml: "auto" }}>
+            {" "}
+            <MobileNav />
+          </Box>
         )}
       </Toolbar>
     </AppBar>
