@@ -30,7 +30,7 @@ export default function AllRuns() {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/runs?page=${currentPage}`,
+          `https://runtrackr-backend.onrender.com/api/runs?page=${currentPage}`,
           {
             headers: { Authorization: accessToken },
           }

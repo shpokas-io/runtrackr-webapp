@@ -18,7 +18,7 @@ const AllShoes = () => {
   useEffect(() => {
     // Fetch the hardcoded shoe list from the backend
     axios
-      .get("http://localhost:5000/api/shoes")
+      .get("https://runtrackr-backend.onrender.com/api/shoes")
       .then((response) => {
         console.log("Shoe data:", response.data);
         setShoes(response.data);
