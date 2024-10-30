@@ -32,7 +32,6 @@ export default function HomePage() {
       if (data) {
         const parsedData = JSON.parse(decodeURIComponent(data));
 
-        //Store the access token in local storage
         if (parsedData.accessToken) {
           localStorage.setItem("accessToken", parsedData.accessToken);
         }
@@ -44,12 +43,9 @@ export default function HomePage() {
 
         //Fetch runs data to get total kilometers for the last week
         const accessToken = parsedData.accessToken;
-        const response = await axios.get(
-          "https://runtrackr-backend.onrender.com/api/runs",
-          {
-            headers: { Authorization: accessToken },
-          }
-        );
+        const response = await axios.get("http://localhost:5000/api/runs", {
+          headers: { Authorization: accessToken },
+        });
 
         setTotalKilometersLastWeek(response.data.totalKilometersLastWeek);
         setTotalKilometersCurrentWeek(response.data.totalKilometersCurrentWeek);
@@ -65,7 +61,7 @@ export default function HomePage() {
       } else {
         //No data, redirect to strava for auth
         console.log("No authorization code, redirect to Strava..."); //debug line
-        window.location.href = `https://runtrackr-backend.onrender.com/auth/strava`;
+        window.location.href = `http://localhost:5000/auth/strava`;
       }
     };
 
