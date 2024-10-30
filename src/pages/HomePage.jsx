@@ -26,7 +26,6 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      //Checking if there`s an auth code in the URL
       const urlParams = new URLSearchParams(window.location.search);
       const data = urlParams.get("data");
 
