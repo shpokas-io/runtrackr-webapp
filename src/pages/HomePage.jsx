@@ -9,12 +9,13 @@ import LastRunData from "../components/LastRunData";
 import shoeImage from "../assets/images/nike-structure.png";
 
 export default function HomePage() {
-  const [shoeStats, setShoeStats] = useState(null);
-  const [lastRun, setLastRun] = useState(null);
-  const [totalKilometersLastWeek, setTotalKilometersLastWeek] = useState(0);
-  const [totalKilometersCurrentWeek, setTotalKilometersCurrentWeek] =
-    useState(0);
-  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState({
+    shoeStats: null,
+    lastRun: null,
+    totalKilometersLastWeek: 0,
+    totalKilometersCurrentWeek: 0,
+    loading: true,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,17 +27,19 @@ export default function HomePage() {
         if (parsedData.accessToken) {
           localStorage.setItem("accessToken", parsedData.accessToken);
         }
-        setLastRun(parsedData.lastRun);
-        setShoeStats(parsedData.gear);
-
         const accessToken = parsedData.accessToken;
         const response = await axios.get("http://localhost:5000/api/runs", {
           headers: { Authorization: accessToken },
         });
 
-        setTotalKilometersLastWeek(response.data.totalKilometersLastWeek);
-        setTotalKilometersCurrentWeek(response.data.totalKilometersCurrentWeek);
-        setLoading(false);
+        setState((prevState) => ({
+          ...prevState,
+          shoeStats: parsedData.gear,
+          lastRun: parsedData.lastRun,
+          totalKilometersLastWeek: response.data.totalKilometersLastWeek,
+          totalKilometersCurrentWeek: response.data.totalKilometersCurrentWeek,
+          loading: false,
+        }));
       } else {
         window.location.href = `http://localhost:5000/auth/strava`;
       }
@@ -45,9 +48,9 @@ export default function HomePage() {
     fetchData();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (state.loading) return <div>Loading...</div>;
 
-  const coordinates = polyline.decode(lastRun?.summary_polyline);
+  const coordinates = polyline.decode(state.lastRun?.summary_polyline);
   const mapCenter = [coordinates[0][0], coordinates[0][1]];
 
   const formatDuration = (movingTimeString) => {
@@ -66,18 +69,18 @@ export default function HomePage() {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <WeeklyStatistics
-            totalKilometersLastWeek={totalKilometersLastWeek}
-            totalKilometersCurrentWeek={totalKilometersCurrentWeek}
+            totalKilometersLastWeek={state.totalKilometersLastWeek}
+            totalKilometersCurrentWeek={state.totalKilometersCurrentWeek}
           />
         </Grid>
         <Grid item xs={12} md={6}>
-          <ShoeStatistics shoeStats={shoeStats} shoeImage={shoeImage} />
+          <ShoeStatistics shoeStats={state.shoeStats} shoeImage={shoeImage} />
         </Grid>
         <Grid item xs={12} md={6}>
           <LastRunData
             mapCenter={mapCenter}
             coordinates={coordinates}
-            lastRun={lastRun}
+            lastRun={state.lastRun}
             formatDuration={formatDuration}
           />
         </Grid>
