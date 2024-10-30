@@ -1,8 +1,6 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import { colors } from "@mui/material";
-import L, { latLng } from "leaflet";
+import L from "leaflet";
 import { useEffect } from "react";
+import PropTypes from "prop-types";
 
 export default function RunMap({ polyline }) {
   useEffect(() => {
@@ -21,7 +19,6 @@ export default function RunMap({ polyline }) {
     };
   }, [polyline]);
 
-  //Function to decode polyline to LatLng objects
   const decodePolyline = (polyline) => {
     const coordinates = [];
     let index = 0,
@@ -57,3 +54,7 @@ export default function RunMap({ polyline }) {
   };
   return <div id="map" style={{ height: "400px", width: "100%" }} />;
 }
+
+RunMap.propTypes = {
+  polyline: PropTypes.string.isRequired,
+};

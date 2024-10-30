@@ -1,4 +1,5 @@
 import { Avatar, Box, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 
 const UserInfo = ({ username }) => (
   <Box
@@ -14,5 +15,9 @@ const UserInfo = ({ username }) => (
     <Typography variant="h6">Your latest statistics:</Typography>
   </Box>
 );
+
+UserInfo.propTypes = {
+  username: PropTypes.string.isRequired,
+};
 
 export default UserInfo;

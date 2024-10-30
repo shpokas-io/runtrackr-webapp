@@ -1,4 +1,5 @@
 import { Card, CardContent, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 
 const WeeklyStatistics = ({
   totalKilometersLastWeek,
@@ -18,5 +19,10 @@ const WeeklyStatistics = ({
     </CardContent>
   </Card>
 );
+
+WeeklyStatistics.propTypes = {
+  totalKilometersLastWeek: PropTypes.number.isRequired,
+  totalKilometersCurrentWeek: PropTypes.number.isRequired,
+};
 
 export default WeeklyStatistics;

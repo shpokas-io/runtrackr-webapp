@@ -6,6 +6,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import PropTypes from "prop-types";
 
 const ShoeStatistics = ({ shoeStats, shoeImage }) => (
   <Card
@@ -63,5 +64,14 @@ const ShoeStatistics = ({ shoeStats, shoeImage }) => (
     </CardContent>
   </Card>
 );
+
+ShoeStatistics.propTypes = {
+  shoeStats: PropTypes.shape({
+    name: PropTypes.string,
+    totalMileage: PropTypes.number,
+    maxMileage: PropTypes.number,
+  }).isRequired,
+  shoeImage: PropTypes.string.isRequired,
+};
 
 export default ShoeStatistics;
