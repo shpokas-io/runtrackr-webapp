@@ -10,15 +10,17 @@ export default function useFetchRunData() {
     loading: true,
   });
 
-  const isDemoMode = true; //Demo mode on/off
+  const isDemoMode = false; // Demo mode on/off
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const url = isDemoMode
+          ? import.meta.env.VITE_DEMO_RUNS_URL
+          : import.meta.env.VITE_RUNS_URL;
+
         if (isDemoMode) {
-          const response = await axios.get(
-            "http://localhost:5000/api/demo-runs"
-          );
+          const response = await axios.get(url);
           setState({
             shoeStats: response.data.gear,
             lastRun: {
@@ -42,7 +44,7 @@ export default function useFetchRunData() {
               localStorage.setItem("accessToken", accessToken);
             }
 
-            const response = await axios.get("http://localhost:5000/api/runs", {
+            const response = await axios.get(url, {
               headers: { Authorization: accessToken },
             });
 
@@ -58,7 +60,7 @@ export default function useFetchRunData() {
               loading: false,
             });
           } else {
-            window.location.href = `http://localhost:5000/auth/strava`;
+            window.location.href = import.meta.env.VITE_STRAVA_AUTH_URL;
           }
         }
       } catch (error) {
@@ -68,7 +70,7 @@ export default function useFetchRunData() {
     };
 
     fetchData();
-  }, []);
+  }, [isDemoMode]);
 
   return state;
 }
