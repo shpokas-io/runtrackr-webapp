@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Typography, Grid, Pagination } from "@mui/material";
-import ShoeCard from "../components/ShoeCard";
+import ShoeCard from "../components/shoes/ShoeCard";
 import { useFetchShoes } from "../hooks/useFetchShoes";
 
 const AllShoes = () => {

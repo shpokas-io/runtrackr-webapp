@@ -1,9 +1,9 @@
 import { Box, Grid } from "@mui/material";
 import polyline from "@mapbox/polyline";
-import UserInfo from "../components/UserInfo";
-import WeeklyStatistics from "../components/WeeklyStatistics";
-import ShoeStatistics from "../components/ShoeStatistics";
-import LastRunData from "../components/LastRunData";
+import UserInfo from "../components/user/UserInfo";
+import WeeklyStatistics from "../components/run/WeeklyStatistics";
+import ShoeStatistics from "../components/shoes/ShoeStatistics";
+import LastRunData from "../components/run/LastRunData";
 import shoeImage from "../assets/images/nike-structure.png";
 import useFetchRunData from "../hooks/useFetchRunData";
 

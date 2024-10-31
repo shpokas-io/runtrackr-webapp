@@ -2,7 +2,7 @@ import { AppBar, Toolbar, Box, useMediaQuery } from "@mui/material";
 import NavTitle from "./NavTitle";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../user/UserAvatar";
 
 export default function Navbar() {
   const isDesktop = useMediaQuery("(min-width:800px)");
