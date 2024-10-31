@@ -6,11 +6,12 @@ const LastRunData = ({ mapCenter, coordinates, lastRun, formatDuration }) => (
   <Card
     variant="outlined"
     sx={{
+      height: 500,
       borderRadius: 2,
       boxShadow: 3,
-      flex: 1,
       display: "flex",
       flexDirection: "column",
+      justifyContent: "space-between",
     }}
   >
     <CardContent
@@ -27,7 +28,7 @@ const LastRunData = ({ mapCenter, coordinates, lastRun, formatDuration }) => (
       <MapContainer
         center={mapCenter}
         zoom={13}
-        style={{ height: "200px", width: "100%", borderRadius: "8px" }}
+        style={{ height: "140px", width: "100%", borderRadius: "8px" }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -38,7 +39,7 @@ const LastRunData = ({ mapCenter, coordinates, lastRun, formatDuration }) => (
           color="blue"
         />
       </MapContainer>
-      <Box sx={{ textAlign: "center" }}>
+      <Box sx={{ textAlign: "center", mt: 2 }}>
         <Typography>Name: {lastRun?.name || "Loading..."}</Typography>
         <Typography>Date: {lastRun ? lastRun.date : "Loading..."}</Typography>
         <Typography>

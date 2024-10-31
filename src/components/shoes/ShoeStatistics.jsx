@@ -9,20 +9,20 @@ import {
 import PropTypes from "prop-types";
 
 const ShoeStatistics = ({ shoeStats, shoeImage }) => {
-  // Define default maxMileage if it's not provided
   const maxMileage = shoeStats?.maxMileage ?? 1000;
   const totalMileage = parseFloat(shoeStats?.totalMileage) || 0;
-  const mileagePercentage = Math.min((totalMileage / maxMileage) * 100, 100); // Cap at 100%
+  const mileagePercentage = Math.min((totalMileage / maxMileage) * 100, 100);
 
   return (
     <Card
       variant="outlined"
       sx={{
+        height: 500,
         borderRadius: 2,
         boxShadow: 3,
-        flex: 1,
         display: "flex",
         flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       <CardContent
@@ -41,7 +41,7 @@ const ShoeStatistics = ({ shoeStats, shoeImage }) => {
           height="140"
           image={shoeImage}
           alt="Running Shoes"
-          sx={{ objectFit: "contain", p: 1, alignSelf: "center" }}
+          sx={{ objectFit: "contain", p: 1, borderRadius: "8px" }}
         />
         <Box
           sx={{
@@ -50,6 +50,7 @@ const ShoeStatistics = ({ shoeStats, shoeImage }) => {
             flexDirection: "column",
             justifyContent: "center",
             textAlign: "center",
+            mt: 2,
           }}
         >
           <Typography>{shoeStats?.name || `Loading...`}</Typography>
@@ -59,11 +60,10 @@ const ShoeStatistics = ({ shoeStats, shoeImage }) => {
             Max mileage: {maxMileage} km
           </Typography>
 
-          {/* Progress Bar */}
           <Box
             sx={{
               mt: 2,
-              position: "relative", // For positioning the pointer
+              position: "relative",
               height: 10,
               width: "100%",
               borderRadius: 5,
@@ -71,7 +71,6 @@ const ShoeStatistics = ({ shoeStats, shoeImage }) => {
               overflow: "hidden",
             }}
           >
-            {/* Progress Indicator */}
             <Box
               sx={{
                 height: "100%",
@@ -80,7 +79,6 @@ const ShoeStatistics = ({ shoeStats, shoeImage }) => {
                 background: `linear-gradient(to right, green, yellow, orange, red)`,
               }}
             />
-            {/* Pointer */}
             <Box
               sx={{
                 position: "absolute",

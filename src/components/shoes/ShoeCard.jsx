@@ -18,9 +18,9 @@ const ShoeCard = ({ shoe }) => (
       component="img"
       image={shoe.imageUrl}
       alt={shoe.name}
-      sx={{ width: "100%", height: 200, objectFit: "cover" }}
+      sx={{ width: "100%", height: 140, objectFit: "cover" }}
     />
-    <CardContent>
+    <CardContent sx={{ textAlign: "center" }}>
       <Typography variant="h5" component="div" align="center">
         {shoe.name}
       </Typography>
