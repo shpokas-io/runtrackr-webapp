@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Typography, Box, Grid } from "@mui/material";
 import { useFetchRuns } from "../hooks/useFetchRuns";
-import RunCard from "../components/RunCard";
-import PaginationControls from "../components/PaginationControls";
+import RunCard from "../components/run/RunCard";
+import PaginationControls from "../components/pagination/PaginationControls";
 
 export default function AllRuns() {
   const [currentPage, setCurrentPage] = useState(1);
