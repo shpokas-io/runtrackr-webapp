@@ -12,11 +12,15 @@ export default function HomePage() {
 
   if (state.loading) return <div>Loading...</div>;
 
-  const coordinates = polyline.decode(state.lastRun?.summary_polyline);
-  const mapCenter = [coordinates[0][0], coordinates[0][1]];
+  const coordinates = state.lastRun?.summary_polyline
+    ? polyline.decode(state.lastRun.summary_polyline)
+    : [];
+  const mapCenter = coordinates.length
+    ? [coordinates[0][0], coordinates[0][1]]
+    : [0, 0];
 
   const formatDuration = (movingTimeString) => {
-    if (!movingTimeString) return "N/A"; //
+    if (!movingTimeString) return "N/A";
     const minutesMatch = movingTimeString.match(/(\d+)\s*minutes/);
     if (minutesMatch) {
       const minutes = parseInt(minutesMatch[1], 10);

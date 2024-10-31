@@ -10,33 +10,60 @@ export default function useFetchRunData() {
     loading: true,
   });
 
+  const isDemoMode = true; //Demo mode on/off
+
   useEffect(() => {
     const fetchData = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const data = urlParams.get("data");
+      try {
+        if (isDemoMode) {
+          const response = await axios.get(
+            "http://localhost:5000/api/demo-runs"
+          );
+          setState({
+            shoeStats: response.data.gear,
+            lastRun: {
+              ...response.data.lastRun,
+              distance: parseFloat(response.data.lastRun.distance),
+            },
+            totalKilometersLastWeek: response.data.totalKilometersLastWeek,
+            totalKilometersCurrentWeek:
+              response.data.totalKilometersCurrentWeek,
+            loading: false,
+          });
+        } else {
+          const urlParams = new URLSearchParams(window.location.search);
+          const data = urlParams.get("data");
 
-      if (data) {
-        const parsedData = JSON.parse(decodeURIComponent(data));
+          if (data) {
+            const parsedData = JSON.parse(decodeURIComponent(data));
+            const accessToken = parsedData.accessToken;
 
-        if (parsedData.accessToken) {
-          localStorage.setItem("accessToken", parsedData.accessToken);
+            if (accessToken) {
+              localStorage.setItem("accessToken", accessToken);
+            }
+
+            const response = await axios.get("http://localhost:5000/api/runs", {
+              headers: { Authorization: accessToken },
+            });
+
+            setState({
+              shoeStats: parsedData.gear,
+              lastRun: {
+                ...parsedData.lastRun,
+                distance: parseFloat(parsedData.lastRun.distance),
+              },
+              totalKilometersLastWeek: response.data.totalKilometersLastWeek,
+              totalKilometersCurrentWeek:
+                response.data.totalKilometersCurrentWeek,
+              loading: false,
+            });
+          } else {
+            window.location.href = `http://localhost:5000/auth/strava`;
+          }
         }
-
-        const accessToken = parsedData.accessToken;
-        const response = await axios.get("http://localhost:5000/api/runs", {
-          headers: { Authorization: accessToken },
-        });
-
-        setState((prevState) => ({
-          ...prevState,
-          shoeStats: parsedData.gear,
-          lastRun: parsedData.lastRun,
-          totalKilometersLastWeek: response.data.totalKilometersLastWeek,
-          totalKilometersCurrentWeek: response.data.totalKilometersCurrentWeek,
-          loading: false,
-        }));
-      } else {
-        window.location.href = `http://localhost:5000/auth/strava`;
+      } catch (error) {
+        console.error("Error fetching run data:", error);
+        setState((prevState) => ({ ...prevState, loading: false }));
       }
     };
 
