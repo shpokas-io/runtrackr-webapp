@@ -8,7 +8,7 @@ export const useFetchShoes = () => {
   useEffect(() => {
     const fetchShoes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/shoes");
+        const response = await axios.get(import.meta.env.VITE_SHOES_API_URL);
         console.log("Shoe data:", response.data);
         setShoes(response.data);
       } catch (error) {

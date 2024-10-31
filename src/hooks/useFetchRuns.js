@@ -20,7 +20,7 @@ export const useFetchRuns = (currentPage) => {
 
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/runs?page=${currentPage}`,
+          `${import.meta.env.VITE_RUNS_API_URL}?page=${currentPage}`,
           { headers: { Authorization: accessToken } }
         );
         setRuns(response.data.runs);
