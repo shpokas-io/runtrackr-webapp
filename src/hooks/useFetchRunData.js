@@ -10,7 +10,7 @@ export default function useFetchRunData() {
     loading: true,
   });
 
-  const isDemoMode = true; // Demo mode on/off
+  const isDemoMode = false; // Demo mode on/off
 
   useEffect(() => {
     const fetchData = async () => {
