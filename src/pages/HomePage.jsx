@@ -6,6 +6,7 @@ import ShoeStatistics from "../components/shoes/ShoeStatistics";
 import LastRunData from "../components/run/LastRunData";
 import shoeImage from "../assets/images/nike-structure.png";
 import useFetchRunData from "../hooks/useFetchRunData";
+import { formatDuration } from "../utils/timeUtils";
 
 export default function HomePage() {
   const state = useFetchRunData();
@@ -18,16 +19,6 @@ export default function HomePage() {
   const mapCenter = coordinates.length
     ? [coordinates[0][0], coordinates[0][1]]
     : [0, 0];
-
-  const formatDuration = (movingTimeString) => {
-    if (!movingTimeString) return "N/A";
-    const minutesMatch = movingTimeString.match(/(\d+)\s*minutes/);
-    if (minutesMatch) {
-      const minutes = parseInt(minutesMatch[1], 10);
-      return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
-    }
-    return "N/A";
-  };
 
   return (
     <Box sx={{ p: 3, backgroundColor: "background.default" }}>
