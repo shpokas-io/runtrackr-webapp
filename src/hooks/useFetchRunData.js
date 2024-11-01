@@ -10,22 +10,30 @@ export default function useFetchRunData() {
     loading: true,
   });
 
-  const isDemoMode = false; // Demo mode on/off
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = isDemoMode
-          ? import.meta.env.VITE_DEMO_RUNS_URL
-          : import.meta.env.VITE_RUNS_URL;
+        const url = import.meta.env.VITE_RUNS_URL;
+        const urlParams = new URLSearchParams(window.location.search);
+        const data = urlParams.get("data");
 
-        if (isDemoMode) {
-          const response = await axios.get(url);
+        if (data) {
+          const parsedData = JSON.parse(decodeURIComponent(data));
+          const accessToken = parsedData.accessToken;
+
+          if (accessToken) {
+            localStorage.setItem("accessToken", accessToken);
+          }
+          console.log("accessTOken", accessToken);
+          const response = await axios.get(url, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+
           setState({
-            shoeStats: response.data.gear,
+            shoeStats: parsedData.gear,
             lastRun: {
-              ...response.data.lastRun,
-              distance: parseFloat(response.data.lastRun.distance),
+              ...parsedData.lastRun,
+              distance: parseFloat(parsedData.lastRun.distance),
             },
             totalKilometersLastWeek: response.data.totalKilometersLastWeek,
             totalKilometersCurrentWeek:
@@ -33,35 +41,7 @@ export default function useFetchRunData() {
             loading: false,
           });
         } else {
-          const urlParams = new URLSearchParams(window.location.search);
-          const data = urlParams.get("data");
-
-          if (data) {
-            const parsedData = JSON.parse(decodeURIComponent(data));
-            const accessToken = parsedData.accessToken;
-
-            if (accessToken) {
-              localStorage.setItem("accessToken", accessToken);
-            }
-
-            const response = await axios.get(url, {
-              headers: { Authorization: accessToken },
-            });
-
-            setState({
-              shoeStats: parsedData.gear,
-              lastRun: {
-                ...parsedData.lastRun,
-                distance: parseFloat(parsedData.lastRun.distance),
-              },
-              totalKilometersLastWeek: response.data.totalKilometersLastWeek,
-              totalKilometersCurrentWeek:
-                response.data.totalKilometersCurrentWeek,
-              loading: false,
-            });
-          } else {
-            window.location.href = import.meta.env.VITE_STRAVA_AUTH_URL;
-          }
+          window.location.href = import.meta.env.VITE_STRAVA_AUTH_URL;
         }
       } catch (error) {
         console.error("Error fetching run data:", error);
@@ -70,7 +50,7 @@ export default function useFetchRunData() {
     };
 
     fetchData();
-  }, [isDemoMode]);
+  }, []);
 
   return state;
 }

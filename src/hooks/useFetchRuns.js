@@ -20,8 +20,8 @@ export const useFetchRuns = (currentPage) => {
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_RUNS_API_URL}?page=${currentPage}`,
-          { headers: { Authorization: accessToken } }
+          `${import.meta.env.VITE_RUNS_API_URL}/activities?page=${currentPage}`,
+          { headers: { Authorization: `Bearer ${accessToken}` } }
         );
         setRuns(response.data.runs);
         setTotalRuns(response.data.total);
